@@ -1,0 +1,213 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+      <!-- Aman CSS -->
+  <link rel="stylesheet" href="{% static 'index.css' %}">
+
+    <title>STOCK MANAGEMENT</title>
+</head>
+
+<body>
+      <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
+  <nav class=" navbar navbar-expand-lg navbar navbar-light" style="background-color:rgba(60, 255, 0, 0.664)">
+    <!-- Use any element to open the sidenav -->
+
+    <a class="navbar-brand" onclick="openNav()">MIMS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item ">
+
+          <!--i tage used to add icon (font awesome)-->
+          <a class="nav-link" href="home"> <i class="fa fa-home">&nbsp;</i> <b>Home </b><span
+              class="sr-only"></span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="profile"><i class="fa fa-user">&nbsp;</i><b>Profile</b></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login"><i class="fa fa-lock">&nbsp;</i><b>Logout</b></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+    <div class="jumbotron">
+        <h1 class="display-4">STOCK MANAGEMENT</h1>
+        <p class="lead">All availabe Products in stock and you also purchase it directly. </p>
+        <hr class="my-4">
+      
+
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Products</th>
+                    <th scope="col">Units(Kg)</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+               <form></form>
+                <tr>
+                    <th scope="row">*</th>
+                    <td>
+
+                    
+                        <select id="products">
+                            <option value="None" default >None</option>
+                            <option value="Cheese">Cheese</option>
+                            <option value="Garlic">Garlic</option>
+                            <option value="Oat Bread">Oat Bread</option>
+                            <option value="Oregano">Oregano</option>
+                           
+                        </select>
+                    </td>
+                    <td>
+                        <select id="units">
+                            <option value="1" default>1 KG</option>
+                            <option value="2">2 KG</option>
+                            <option value="3">3 KG</option>
+                            <option value="5">5 KG</option>
+                        </select>
+                    </td>
+                </tr>
+               
+            </tbody>
+          
+        </table>
+        
+            <!-- <div class="col-6">
+                 <button type="button" class="cancelbtn" data-dismiss="modal" >Cancel</button>
+            </div> -->
+          <div>
+          <button type="submit" class="signupbtn" style="float: right;"   onclick="AddToStock()"    >Add@Stock</button>
+            </div>
+            <br>
+            <br>
+        
+            <br>
+<!-- show all the products availabe in stock -->
+<h5 class="display-6" style="font-style: italic;">List of all the products availabe in stock </h5>
+            <table class="table table-dark" id="stocktable">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Products</th>
+                        <th scope="col">Units(Kg)</th>
+                        
+                    </tr>
+                </thead>
+                 <tbody>
+                    
+            {% for i in storage %}
+            <tr>
+                <th scope="row">{{i.id}}</th>
+                <td>{{i.StockName }}</td>
+                <td>{{i.StockQuantity }}</td>
+               
+            </tr>
+
+       {%  endfor %}
+               
+                    <!-- <tr>
+                        <th scope="row">2</th>
+                        <td>Butter</td>
+                        <td>12</td>
+                    
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Snacks</td>
+                        <td>121 pc</td>
+                     
+                    </tr> -->
+        
+                   
+                </tbody> 
+              
+            </table>
+    </div>
+
+
+
+<script> 
+    function AddToStock(){
+      
+        var req = new XMLHttpRequest();          // 1step  - create object of http for sending request
+        var stock_name = document.getElementById('products').value; // collect data 
+        var stock_quantity = document.getElementById('units').value;
+        
+     
+        url = 'addtostock?stock_name=' + stock_name + '&stock_quantity=' + stock_quantity ;     // url where you send request
+        req.onreadystatechange = function () {  // anonymous function
+      
+          if (this.readyState == 4 && this.status == 200) {      // inside this content will run response is comes succesfully from server
+            var data = eval(req.responseText);
+                             // if our data save succesfully on server db a pop appear 
+            alert(data[1].StockQuanity)
+           
+            var table = document.getElementById("stocktable");
+            for (i = 1 ; i<data.length ; i++) {
+                var row = table.insertRow(i);     // insert a top row 
+                var cell0 = row.insertCell(0);        // columa1
+                var cell1 = row.insertCell(1);         // columa1
+                var cell2 = row.insertCell(2);       // columa1
+              
+               
+                cell0.innerHTML = i;
+                cell1.innerHTML = data[i].StockName;
+                cell2.innerHTML = data[i].StockQuanity;
+               
+                 
+                 
+            
+            }
+              
+              
+
+            
+          }
+        };
+        req.open("GET", url, true);     // 2 step statement for sending request
+        // xhttp.send("name=aman");   //you can send req+values
+        req.send();      // 3step  -FINAL STATEMENT FOR SENDING REQUEST 
+        // clear the input fields after saved 
+        document.getElementById('products').value = "none";
+        document.getElementById('units').value = "none";
+       
+    }
+    
+</script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

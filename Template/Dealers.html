@@ -1,0 +1,188 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+      <!-- Aman CSS -->
+  <link rel="stylesheet" href="{% static 'index.css' %}">
+
+    <title>Dealers</title>
+</head>
+
+<body>
+    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
+  <nav class=" navbar navbar-expand-lg navbar navbar-light" style="background-color:rgba(60, 255, 0, 0.664)">
+    <!-- Use any element to open the sidenav -->
+
+    <a class="navbar-brand" onclick="openNav()">MIMS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+
+          <!--i tage used to add icon (font awesome)-->
+          <a class="nav-link" href="home"> <i class="fa fa-home">&nbsp;</i> <b>Home </b><span
+              class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="profile"><i class="fa fa-user">&nbsp;</i><b>Profile</b></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login"><i class="fa fa-lock">&nbsp;</i><b>Logout</b></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+    <div class="jumbotron">
+        <h1 class="display-4">Dealers</h1>
+        <p class="lead">All availabe Dealers </p>
+       
+
+        <table class="table table-dark" id="Dealertable">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Dealers Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">MobileNo.</th>
+                    <th scope="col">Type</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                           
+            {% for i in dealer %}
+            <tr>
+              <th scope="row"> {{  i.id}}</th>
+              <td>{{ i.Dname}}</td>
+              <td>{{i.DAddress }}</td>
+              <td>{{i.DMobile}}</td>
+              <td>{{i.Dtype}}</td>
+            </tr>
+
+       {%  endfor %}
+             
+             
+            </tbody>
+          
+        </table>
+        <div class="clearfix">
+               <!-- Button trigger modal -->
+          <button type="submit" class="signupbtn" data-toggle="modal" data-target="#exampleModalCenter" >Add New Dealer</button>
+            </div>
+    
+    </div>
+<!-- modal for get the dealer details and store into database -->
+<!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Dealer details</h5>
+         
+         
+        </div>
+        <div class="modal-body">
+          
+          
+         
+          <label>DealerName</label><input type="text"  id="Dname">
+          <label>Address</label><input type="text" id="Dadd">
+          <label>MobileNo</label><input type="number" id="Dmobile">  <br>
+          <label>Type</label><input type="text" id="Dtype">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button"  class="close" class="btn btn-primary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="dealerstore()">Add Dealer</button>
+    
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+ <script>
+   function dealerstore(){
+    alert("fgdf");
+    var req = new XMLHttpRequest();          // 1step  - create object of http for sending request
+    var Dname = document.getElementById('Dname').value; // collect data 
+    var Dadd = document.getElementById('Dadd').value;
+    var Dmobile = document.getElementById('Dmobile').value;
+    var Dtype = document.getElementById('Dtype').value;
+    
+ 
+    url = 'dealerstore?Dname=' + Dname + '&Dadd=' + Dadd + '&Dmobile=' + Dmobile + '&Dtype=' + Dtype;     // url where you send request
+    req.onreadystatechange = function () {  // anonymous function
+  
+      if (this.readyState == 4 && this.status == 200) {      // inside this content will run response is comes succesfully from server
+        var data = eval(req.responseText);
+                         // if our data save succesfully on server db a pop appear 
+        alert(data[1].DName)
+       
+        var table = document.getElementById("Dealertable");
+        for (i = 1 ; i<data.length ; i++) {
+            var row = table.insertRow(i);     // insert a top row 
+            var cell0 = row.insertCell(0);        // columa1
+            var cell1 = row.insertCell(1);         // columa1
+            var cell3 = row.insertCell(2);       // columa1
+            var cell4 = row.insertCell(3);  
+            var cell5 = row.insertCell(4);  
+          
+           
+            cell0.innerHTML = i;
+            cell1.innerHTML = data[i].DName;
+            cell3.innerHTML = data[i].DAddress;
+            cell4.innerHTML = data[i].DMobile;
+            cell5.innerHTML = data[i].Dtype;
+            
+             
+             
+        
+        }
+          
+          
+
+        
+      }
+    }
+    req.open("GET", url, true);     // 2 step statement for sending request
+    // xhttp.send("name=aman");   //you can send req+values
+    req.send();      // 3step  -FINAL STATEMENT FOR SENDING REQUEST 
+    // clear the input fields after saved 
+    document.getElementById('products').value = "none";
+    document.getElementById('units').value = "none";
+   }
+ </script> 
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

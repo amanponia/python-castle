@@ -1,0 +1,92 @@
+<html>
+{% load static %}
+
+<head>
+    <title>Title</title>
+    <style type="text/css">
+        body {
+            font-weight: 200;
+            font-size: 14px;
+        }
+
+        .header {
+            font-size: 20px;
+            font-weight: 100;
+            text-align: center;
+            color: #007cae;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 100;
+            /* text-align: right;*/
+            padding: 10px 20px 0px 20px;
+        }
+
+        .title span {
+            color: #007cae;
+        }
+
+        .details {
+            padding: 10px 20px 0px 20px;
+            text-align: left !important;
+            /*margin-left: 40%;*/
+        }
+
+        .hrItem {
+            border: none;
+            height: 1px;
+            /* Set the hr color */
+            color: #333;
+            /* old IE */
+            background-color: #fff;
+            /* Modern Browsers */
+        }
+    </style>
+</head>
+
+<body>
+    <div class='wrapper'>
+        <div class='header'>
+            <p class='title'>{{header}} </p>
+        </div>
+        <div>
+            <div class='details'>
+                <label>Customer Name:</label> {{  man_name }} <br />
+                Address: {{ man_add }} <br />
+                Mob: {{ man_mob }}
+
+                <hr class='hrItem' />
+            </div>
+        </div>
+
+        <table class="table table-striped table-bordered table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>price</th>
+                </tr>
+                <tr>
+                    <td>212</td>
+                    <td>Tea</td>
+                    <td>3</td>
+                    <td>10</td>
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+            </tbody>
+        </table>
+
+         <h4>GST : 15 INR</h4> <caption>Currently NO GST APPLIED</caption>
+         <hr>
+        <H2>TOTAL AMOUNT : {{price}} INR</H2> 
+        <hr>
+</body>
+</body>
+
+</html>
